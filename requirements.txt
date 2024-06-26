@@ -1,7 +1,6 @@
-Flask~=3.0.3
+Flask
 PyMuPDF
-vaderSentiment~=3.3.2
-Werkzeug~=3.0.3
-fitz
+vaderSentiment
 matplotlib
 gunicorn
+werkzeug
