@@ -1,5 +1,3 @@
 Flask
-nltk
-numpy
-gunicorn
-Werkzeug
+PyMuPDF
+vaderSentiment
