@@ -3,30 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <title>PDF Sentiment Analyzer</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>Upload Earnings Call PDF</h1>
-        <form id="uploadForm" enctype="multipart/form-data">
-            <input type="file" id="file" name="file" accept=".pdf" required>
-            <button type="submit">Upload</button>
+        <h1 class="mt-5">Upload Earnings Call PDF</h1>
+        <form id="uploadForm" enctype="multipart/form-data" method="post" action="/upload" class="mt-3">
+            <div class="form-group">
+                <input type="file" id="file" name="file" accept=".pdf" required class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
         </form>
-        <div id="result"></div>
+        <div id="result" class="mt-5"></div>
     </div>
-    <script>
-        document.getElementById('uploadForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const formData = new FormData();
-            formData.append('file', document.getElementById('file').files[0]);
-            const response = await fetch('/upload', {
-                method: 'POST',
-                body: formData
-            });
-            const result = await response.json();
-            document.getElementById('result').innerText = JSON.stringify(result.sentiment, null, 2);
-        };
-    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 </body>
 </html>
