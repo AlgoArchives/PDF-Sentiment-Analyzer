@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 from werkzeug.utils import secure_filename
 import fitz  # PyMuPDF
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
@@ -32,8 +32,8 @@ def upload_file():
     file.save(file_path)
     text = extract_text_from_pdf(file_path)
     sentiment = analyze_sentiment(text)
-    plot_sentiment(sentiment, filename)
-    return jsonify({'sentiment': sentiment})
+    plot_filename = plot_sentiment(sentiment, filename)
+    return jsonify({'sentiment': sentiment, 'plot_filename': plot_filename})
 
 
 def extract_text_from_pdf(pdf_path):
@@ -63,9 +63,17 @@ def plot_sentiment(sentiment, filename):
     plt.title('Sentiment Analysis')
     plt.ylim(0, 1)
 
-    output_path = os.path.join(app.config['UPLOAD_FOLDER'], f"{filename}_sentiment.png")
+    plot_filename = f"{filename}_sentiment.png"
+    output_path = os.path.join(app.config['UPLOAD_FOLDER'], plot_filename)
     plt.savefig(output_path)
     plt.close()
+
+    return plot_filename
+
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
 if __name__ == '__main__':
